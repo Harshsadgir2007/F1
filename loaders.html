@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Edition Loaders | Lando Norris LN4 & Charles Leclerc CL16</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Syne:wght@700;800&family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090a0e;
+      --bg-card: rgba(16, 17, 23, 0.88);
+      --bg-card-border: rgba(255, 255, 255, 0.08);
+      --f1-red: #e10600;
+      --f1-neon-red: #ff1801;
+      --f1-yellow: #ffd600;
+      --f1-purple: #b388ff;
+      --f1-cyan: #00f0ff;
+      
+      /* Lando Norris Signature Palette */
+      --ln-volt: #d7ff00;
+      --ln-volt-glow: rgba(215, 255, 0, 0.45);
+      --ln-papaya: #ff8000;
+      --ln-dark: #08090b;
+
+      /* Charles Leclerc Signature Palette */
+      --cl-red: #e80020;
+      --cl-red-glow: rgba(232, 0, 32, 0.5);
+      --cl-gold: #c5a059;
+      --cl-white: #ffffff;
+      --cl-dark: #0b0607;
+
+      --text-white: #ffffff;
+      --text-dim: #8e909d;
+      --font-display: 'Orbitron', monospace, sans-serif;
+      --font-driver: 'Syne', sans-serif;
+      --font-body: 'Titillium Web', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 32px 24px 64px;
+      position: relative;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(215, 255, 0, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, rgba(232, 0, 32, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(0, 240, 255, 0.05) 0%, transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      max-width: 1320px;
+      margin: 0 auto 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text-white);
+    }
+
+    .brand-badge {
+      background: var(--f1-red);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      box-shadow: 0 0 16px rgba(225, 6, 0, 0.5);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-white);
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Header */
+    .hero-header {
+      max-width: 1320px;
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 5px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 30px;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero-header h1 {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--ln-volt) 80%, var(--cl-red) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-header p {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Driver Spotlight Showcase */
+    .driver-spotlight-section {
+      max-width: 1320px;
+      margin: 0 auto 50px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .driver-spotlight-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .spotlight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .spotlight-card.lando:hover {
+      transform: translateY(-6px);
+      border-color: var(--ln-volt);
+      box-shadow: 0 20px 60px rgba(215, 255, 0, 0.2);
+    }
+
+    .spotlight-card.charles:hover {
+      transform: translateY(-6px);
+      border-color: var(--cl-red);
+      box-shadow: 0 20px 60px rgba(232, 0, 32, 0.25);
+    }
+
+    .spotlight-header {
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--bg-card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .driver-tag {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .spotlight-stage {
+      padding: 60px 32px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .spotlight-footer {
+      padding: 24px 28px;
+      border-top: 1px solid var(--bg-card-border);
+      background: rgba(255, 255, 255, 0.015);
+      margin-top: auto;
+    }
+
+    .spotlight-desc {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .spotlight-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-driver-apply {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-driver-apply.lando {
+      background: var(--ln-volt);
+      color: #000;
+      box-shadow: 0 0 20px rgba(215, 255, 0, 0.4);
+    }
+    .btn-driver-apply.lando:hover {
+      background: #e2ff33;
+      transform: scale(1.02);
+      box-shadow: 0 0 28px rgba(215, 255, 0, 0.7);
+    }
+
+    .btn-driver-apply.charles {
+      background: var(--cl-red);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(232, 0, 32, 0.5);
+    }
+    .btn-driver-apply.charles:hover {
+      background: #ff1c3a;
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(232, 0, 32, 0.8);
+    }
+
+    .btn-preview-screen {
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--text-white);
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+    }
+    .btn-preview-screen:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ============================================================
+       01. LANDO NORRIS (LN4) SIGNATURE LOADER
+       Aesthetic: Acid Volt Cyberpunk, Skewed Streetwear Monogram,
+       Laser Glitch Bar & Rapid Digital Percentage Ticker
+    ============================================================ */
+    .ln4-loader-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      width: 100%;
+      max-width: 380px;
+      background: radial-gradient(circle at center, rgba(215, 255, 0, 0.07) 0%, rgba(8, 9, 11, 0.98) 75%);
+      border: 1px solid rgba(215, 255, 0, 0.2);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(215, 255, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cyber grid overlay */
+    .ln4-loader-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(215, 255, 0, 0.03) 0px,
+        rgba(215, 255, 0, 0.03) 1px,
+        transparent 1px,
+        transparent 16px
+      );
+      pointer-events: none;
+    }
+
+    /* LN4 Monogram Emblem */
+    .ln4-emblem-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: skewX(-10deg);
+    }
+
+    .ln4-badge {
+      width: 104px;
+      height: 94px;
+      background: #0d0f12;
+      border: 3px solid var(--ln-volt);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 
+        0 0 25px var(--ln-volt-glow),
+        inset 0 0 18px rgba(215, 255, 0, 0.2);
+      animation: lnPulse 2s ease-in-out infinite alternate;
+    }
+
+    .ln4-badge::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 18px;
+      height: 18px;
+      background: var(--ln-papaya);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+
+    .ln4-logo-text {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--ln-volt);
+      letter-spacing: -1px;
+      line-height: 1;
+      text-shadow: 0 0 14px var(--ln-volt);
+    }
+
+    .ln4-num {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #fff;
+      background: var(--ln-volt);
+      color: #000;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-top: 3px;
+      letter-spacing: 1px;
+    }
+
+    /* Scanning Laser Line */
+    .ln4-scanline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #fff, var(--ln-volt), transparent);
+      box-shadow: 0 0 10px var(--ln-volt);
+      animation: lnScan 1.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes lnScan {
+      0% { top: 10%; opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { top: 90%; opacity: 0.3; }
+    }
+
+    @keyframes lnPulse {
+      0% {
+        box-shadow: 0 0 20px rgba(215, 255, 0, 0.3), inset 0 0 12px rgba(215, 255, 0, 0.15);
+        border-color: #c0e600;
+      }
+      100% {
+        box-shadow: 0 0 35px rgba(215, 255, 0, 0.65), inset 0 0 24px rgba(215, 255, 0, 0.35);
+        border-color: #f0ff66;
+      }
+    }
+
+    /* LN4 Telemetry Audio / Soundbar Waves */
+    .ln4-soundbars {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      height: 24px;
+    }
+
+    .ln-bar {
+      width: 4px;
+      background: var(--ln-volt);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--ln-volt);
+      animation: lnBarAnim 1s ease-in-out infinite alternate;
+    }
+
+    .ln-bar:nth-child(1) { height: 8px; animation-delay: 0.1s; }
+    .ln-bar:nth-child(2) { height: 16px; animation-delay: 0.3s; }
+    .ln-bar:nth-child(3) { height: 24px; animation-delay: 0.15s; background: var(--ln-papaya); box-shadow: 0 0 8px var(--ln-papaya); }
+    .ln-bar:nth-child(4) { height: 12px; animation-delay: 0.4s; }
+    .ln-bar:nth-child(5) { height: 20px; animation-delay: 0.25s; }
+    .ln-bar:nth-child(6) { height: 10px; animation-delay: 0.35s; }
+    .ln-bar:nth-child(7) { height: 22px; animation-delay: 0.05s; }
+
+    @keyframes lnBarAnim {
+      0% { transform: scaleY(0.3); opacity: 0.6; }
+      100% { transform: scaleY(1.3); opacity: 1; }
+    }
+
+    /* Progress & Tagline */
+    .ln4-progress-track {
+      width: 100%;
+      height: 6px;
+      background: #191b22;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ln4-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ln-papaya), var(--ln-volt));
+      box-shadow: 0 0 14px var(--ln-volt);
+      animation: lnProgress 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    @keyframes lnProgress {
+      0% { width: 0%; transform: translateX(-10%); }
+      60% { width: 85%; transform: translateX(0); }
+      100% { width: 100%; transform: translateX(0); }
+    }
+
+    .ln4-status-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      font-weight: 800;
+      transform: skewX(-6deg);
+    }
+
+    .ln4-status-title {
+      color: var(--ln-volt);
+      text-transform: uppercase;
+    }
+
+    .ln4-ticker {
+      color: #fff;
+    }
+
+    /* ============================================================
+       02. CHARLES LECLERC (CL16) SIGNATURE LOADER
+       Aesthetic: High-Fashion Luxury Racing, Monaco Red & White,
+       Smooth Laser Vector Monogram Path & Champagne Pinstripes
+    ============================================================ */
+    .cl16-loader-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      width: 100%;
+      max-width: 380px;
+      background: radial-gradient(circle at center, rgba(232, 0, 32, 0.09) 0%, rgba(11, 6, 7, 0.98) 75%);
+      border: 1px solid rgba(232, 0, 32, 0.25);
+      border-radius: 16px;
+      padding: 34px 28px;
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(232, 0, 32, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Monegasque Flag Ribbon at Top */
+    .cl16-monaco-ribbon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      display: flex;
+    }
+    .cl16-ribbon-red {
+      flex: 1;
+      background: var(--cl-red);
+      box-shadow: 0 0 10px var(--cl-red);
+    }
+    .cl16-ribbon-white {
+      flex: 1;
+      background: #ffffff;
+      box-shadow: 0 0 10px #ffffff;
+    }
+
+    /* SVG Monogram Laser Drawing Animation */
+    .cl16-svg-monogram {
+      width: 120px;
+      height: 100px;
+      filter: drop-shadow(0 0 14px rgba(232, 0, 32, 0.7));
+    }
+
+    .cl16-path-base {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.1);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cl16-path-laser {
+      fill: none;
+      stroke: var(--cl-red);
+      stroke-width: 4.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 240;
+      stroke-dashoffset: 240;
+      animation: clDrawLaser 2.4s ease-in-out infinite alternate;
+    }
+
+    .cl16-path-white {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      animation: clDrawWhite 2.4s ease-in-out infinite alternate 0.2s;
+    }
+
+    @keyframes clDrawLaser {
+      0% { stroke-dashoffset: 240; opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    @keyframes clDrawWhite {
+      0% { stroke-dashoffset: 120; }
+      100% { stroke-dashoffset: 0; }
+    }
+
+    .cl16-driver-title {
+      font-family: var(--font-driver);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-align: center;
+      animation: clLetterSpacing 2.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes clLetterSpacing {
+      0% { letter-spacing: 4px; opacity: 0.8; }
+      100% { letter-spacing: 8px; opacity: 1; text-shadow: 0 0 16px rgba(232, 0, 32, 0.8); }
+    }
+
+    .cl16-subline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+    }
+
+    .cl16-subline span.num {
+      color: var(--cl-red);
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+
+    .cl16-subline span.divider {
+      color: var(--cl-gold);
+    }
+
+    /* Elegant Liquid Track */
+    .cl16-progress-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cl16-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--cl-red), #ffffff);
+      box-shadow: 0 0 12px var(--cl-red);
+      animation: clProgress 2s ease-in-out infinite;
+    }
+
+    @keyframes clProgress {
+      0% { width: 0%; transform: translateX(-100%); }
+      50% { width: 70%; }
+      100% { width: 100%; transform: translateX(100%); }
+    }
+
+    /* ============================================================
+       FULL SCREEN PRELOADER OVERLAY
+    ============================================================ */
+    .preloader-overlay {
+      position: fixed;
+      inset: 0;
+      background: #060709;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .preloader-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Shutter wipe effect on exit */
+    .preloader-shutter-top, .preloader-shutter-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: #060709;
+      transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 1;
+    }
+    .preloader-shutter-top { top: 0; }
+    .preloader-shutter-bottom { bottom: 0; }
+
+    .preloader-overlay.dismiss .preloader-shutter-top {
+      transform: translateY(-100%);
+    }
+    .preloader-overlay.dismiss .preloader-shutter-bottom {
+      transform: translateY(100%);
+    }
+
+    .preloader-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .btn-close-preloader {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.2s ease;
+    }
+    .btn-close-preloader:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #171922;
+      border: 1px solid var(--f1-cyan);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateY(120%);
+      transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      z-index: 9999;
+    }
+    .toast.show {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <a href="/" class="brand">
+      <span class="brand-badge">FASTF1</span>
+      <span class="brand-title">Formula 1 Telemetry Engine</span>
+    </a>
+    <div class="nav-actions">
+      <a href="/" class="btn-nav">← Back to Dashboard</a>
+      <button class="btn-nav" style="background: var(--ln-volt); color: #000; border-color: var(--ln-volt);" onclick="applyDriverLoader('lando')">Activate LN4</button>
+      <button class="btn-nav" style="background: var(--cl-red); color: #fff; border-color: var(--cl-red);" onclick="applyDriverLoader('charles')">Activate CL16</button>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <section class="hero-header">
+    <div class="hero-badge">Driver Edition Web Loaders</div>
+    <h1>Lando Norris & Charles Leclerc</h1>
+    <p>Authentic bespoke loaders inspired by the official web identities of <strong>Lando Norris (LN4)</strong> and <strong>Charles Leclerc (CL16)</strong>. Complete with signature typography, cyber voltage, and luxury Monaco telemetry aesthetics.</p>
+  </section>
+
+  <!-- Driver Spotlight Grid -->
+  <main class="driver-spotlight-section">
+
+    <!-- 01. LANDO NORRIS LN4 SPOTLIGHT CARD -->
+    <div class="spotlight-card lando">
+      <div class="spotlight-header">
+        <div>
+          <span style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 900; color: #fff;">LANDO NORRIS</span>
+          <span style="color: var(--ln-volt); margin-left: 8px; font-weight: 700;">#04</span>
+        </div>
+        <span class="driver-tag" style="background: rgba(215, 255, 0, 0.15); color: var(--ln-volt); border: 1px solid var(--ln-volt);">
+          LN4 CYBER VOLT
+        </span>
+      </div>
+
+      <div class="spotlight-stage">
+        <!-- Live LN4 Loader Component -->
+        <div class="ln4-loader-container">
+          <div class="ln4-emblem-wrapper">
+            <div class="ln4-badge">
+              <div class="ln4-logo-text">LN</div>
+              <div class="ln4-num">04</div>
+              <div class="ln4-scanline"></div>
+            </div>
+          </div>
+
+          <div class="ln4-soundbars">
+            <div class="ln-bar"></div>
+            <div class="ln-bar"></div>
+            <div class="ln-bar"></div>
+            <div class="ln-bar"></div>
+            <div class="ln-bar"></div>
+            <div class="ln-bar"></div>
+            <div class="ln-bar"></div>
+          </div>
+
+          <div class="ln4-progress-track">
+            <div class="ln4-progress-fill"></div>
+          </div>
+
+          <div class="ln4-status-row">
+            <span class="ln4-status-title">OVERTAKE MODE</span>
+            <span class="ln4-ticker" id="lnLivePercent">94%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spotlight-footer">
+        <p class="spotlight-desc">
+          Inspired by <strong>landonorris.com</strong> and Quadrant: fluorescent neon volt yellow, skewed street-racing monogram, rapid digital telemetry soundbars, and scanning laser glitch effects.
+        </p>
+        <div class="spotlight-controls">
+          <button class="btn-driver-apply lando" onclick="applyDriverLoader('lando')">
+            ⚡ Implement LN4 on Site
+          </button>
+          <button class="btn-preview-screen" onclick="openFullscreenPreloader('lando')">
+            🎬 Test Full-Screen Intro
+          </button>
+          <button class="btn-preview-screen" onclick="copyDriverCode('lando')">
+            📋 Copy Code
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02. CHARLES LECLERC CL16 SPOTLIGHT CARD -->
+    <div class="spotlight-card charles">
+      <div class="spotlight-header">
+        <div>
+          <span style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 900; color: #fff;">CHARLES LECLERC</span>
+          <span style="color: var(--cl-red); margin-left: 8px; font-weight: 700;">#16</span>
+        </div>
+        <span class="driver-tag" style="background: rgba(232, 0, 32, 0.15); color: var(--cl-red); border: 1px solid var(--cl-red);">
+          CL16 MONACO PRESTIGE
+        </span>
+      </div>
+
+      <div class="spotlight-stage">
+        <!-- Live CL16 Loader Component -->
+        <div class="cl16-loader-container">
+          <!-- Monaco Ribbon -->
+          <div class="cl16-monaco-ribbon">
+            <div class="cl16-ribbon-red"></div>
+            <div class="cl16-ribbon-white"></div>
+          </div>
+
+          <!-- SVG Laser-Drawn CL16 Monogram -->
+          <svg class="cl16-svg-monogram" viewBox="0 0 120 100">
+            <!-- Background Ghost Track -->
+            <path class="cl16-path-base" d="M 45,20 C 25,20 15,35 15,50 C 15,65 25,80 45,80 L 55,80" />
+            <path class="cl16-path-base" d="M 60,20 L 60,80 L 85,80" />
+            <path class="cl16-path-base" d="M 95,20 L 95,80 M 105,20 C 105,20 105,80 105,80" />
+
+            <!-- Active Laser Path (C & L Monogram) -->
+            <path class="cl16-path-laser" d="M 45,20 C 25,20 15,35 15,50 C 15,65 25,80 45,80 L 55,80" />
+            <path class="cl16-path-laser" d="M 60,20 L 60,80 L 85,80" />
+            <!-- Active White Path (16 Accents) -->
+            <path class="cl16-path-white" d="M 96,25 L 96,80 M 106,20 L 106,80" />
+          </svg>
+
+          <div class="cl16-driver-title">CHARLES LECLERC</div>
+
+          <div class="cl16-subline">
+            <span class="num">16</span>
+            <span class="divider">•</span>
+            <span>SCUDERIA FERRARI</span>
+            <span class="divider">•</span>
+            <span>MONACO</span>
+          </div>
+
+          <div class="cl16-progress-track">
+            <div class="cl16-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spotlight-footer">
+        <p class="spotlight-desc">
+          Inspired by <strong>charlesleclerc.com</strong>: high-fashion Ferrari Rosso Corsa, Monegasque flag ribbon, laser-traced vector monogram, and editorial typography with expanding letter spacing.
+        </p>
+        <div class="spotlight-controls">
+          <button class="btn-driver-apply charles" onclick="applyDriverLoader('charles')">
+            ⚡ Implement CL16 on Site
+          </button>
+          <button class="btn-preview-screen" onclick="openFullscreenPreloader('charles')">
+            🎬 Test Full-Screen Intro
+          </button>
+          <button class="btn-preview-screen" onclick="copyDriverCode('charles')">
+            📋 Copy Code
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Full-Screen Interactive Preloader Modal -->
+  <div id="fullscreenPreloader" class="preloader-overlay">
+    <div class="preloader-shutter-top"></div>
+    <div class="preloader-shutter-bottom"></div>
+    <button class="btn-close-preloader" onclick="closeFullscreenPreloader()">✕ Close Preview</button>
+    <div class="preloader-content" id="preloaderInner"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span>✅</span>
+    <span id="toastMsg">Driver loader activated!</span>
+  </div>
+
+  <script>
+    // Live percentage ticker simulation for Lando
+    let percent = 4;
+    setInterval(() => {
+      percent += Math.floor(Math.random() * 8) + 3;
+      if (percent > 100) percent = 4;
+      const el = document.getElementById("lnLivePercent");
+      if (el) el.textContent = `${percent}%`;
+    }, 180);
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      const m = document.getElementById("toastMsg");
+      if (m) m.textContent = msg;
+      if (t) {
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 3200);
+      }
+    }
+
+    function applyDriverLoader(driverId) {
+      localStorage.setItem("f1_active_loader", driverId);
+      const name = driverId === 'lando' ? 'Lando Norris (LN4)' : 'Charles Leclerc (CL16)';
+      showToast(`${name} set as active dashboard loader!`);
+    }
+
+    function openFullscreenPreloader(driverId) {
+      const overlay = document.getElementById("fullscreenPreloader");
+      const inner = document.getElementById("preloaderInner");
+      if (!overlay || !inner) return;
+
+      overlay.classList.remove("dismiss");
+      overlay.classList.add("active");
+
+      if (driverId === 'lando') {
+        inner.innerHTML = `
+          <div class="ln4-loader-container" style="transform: scale(1.15); box-shadow: 0 0 50px rgba(215, 255, 0, 0.4);">
+            <div class="ln4-emblem-wrapper">
+              <div class="ln4-badge">
+                <div class="ln4-logo-text">LN</div>
+                <div class="ln4-num">04</div>
+                <div class="ln4-scanline"></div>
+              </div>
+            </div>
+            <div class="ln4-soundbars">
+              <div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div>
+            </div>
+            <div class="ln4-progress-track">
+              <div class="ln4-progress-fill"></div>
+            </div>
+            <div class="ln4-status-row">
+              <span class="ln4-status-title">LANDO NORRIS // READY</span>
+              <span class="ln4-ticker">100%</span>
+            </div>
+          </div>
+        `;
+      } else {
+        inner.innerHTML = `
+          <div class="cl16-loader-container" style="transform: scale(1.15); box-shadow: 0 0 50px rgba(232, 0, 32, 0.5);">
+            <div class="cl16-monaco-ribbon">
+              <div class="cl16-ribbon-red"></div>
+              <div class="cl16-ribbon-white"></div>
+            </div>
+            <svg class="cl16-svg-monogram" viewBox="0 0 120 100">
+              <path class="cl16-path-base" d="M 45,20 C 25,20 15,35 15,50 C 15,65 25,80 45,80 L 55,80" />
+              <path class="cl16-path-base" d="M 60,20 L 60,80 L 85,80" />
+              <path class="cl16-path-base" d="M 95,20 L 95,80 M 105,20 C 105,20 105,80 105,80" />
+              <path class="cl16-path-laser" d="M 45,20 C 25,20 15,35 15,50 C 15,65 25,80 45,80 L 55,80" />
+              <path class="cl16-path-laser" d="M 60,20 L 60,80 L 85,80" />
+              <path class="cl16-path-white" d="M 96,25 L 96,80 M 106,20 L 106,80" />
+            </svg>
+            <div class="cl16-driver-title">CHARLES LECLERC</div>
+            <div class="cl16-subline">
+              <span class="num">16</span><span class="divider">•</span><span>SCUDERIA FERRARI</span>
+            </div>
+            <div class="cl16-progress-track">
+              <div class="cl16-progress-fill"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Automatically shutter away after 3.2 seconds to simulate entering the site
+      setTimeout(() => {
+        closeFullscreenPreloader();
+      }, 3400);
+    }
+
+    function closeFullscreenPreloader() {
+      const overlay = document.getElementById("fullscreenPreloader");
+      if (overlay) {
+        overlay.classList.add("dismiss");
+        setTimeout(() => {
+          overlay.classList.remove("active");
+          overlay.classList.remove("dismiss");
+        }, 600);
+      }
+    }
+
+    function copyDriverCode(driverId) {
+      const snippets = {
+        'lando': `<!-- Lando Norris (LN4) Signature Loader -->
+<div class="ln4-loader-container">
+  <div class="ln4-emblem-wrapper">
+    <div class="ln4-badge">
+      <div class="ln4-logo-text">LN</div>
+      <div class="ln4-num">04</div>
+      <div class="ln4-scanline"></div>
+    </div>
+  </div>
+  <div class="ln4-soundbars">
+    <div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div>
+    <div class="ln-bar"></div><div class="ln-bar"></div><div class="ln-bar"></div>
+  </div>
+  <div class="ln4-progress-track">
+    <div class="ln4-progress-fill"></div>
+  </div>
+  <div class="ln4-status-row">
+    <span class="ln4-status-title">OVERTAKE MODE</span>
+    <span class="ln4-ticker">94%</span>
+  </div>
+</div>`,
+        'charles': `<!-- Charles Leclerc (CL16) Signature Loader -->
+<div class="cl16-loader-container">
+  <div class="cl16-monaco-ribbon">
+    <div class="cl16-ribbon-red"></div>
+    <div class="cl16-ribbon-white"></div>
+  </div>
+  <svg class="cl16-svg-monogram" viewBox="0 0 120 100">
+    <path class="cl16-path-base" d="M 45,20 C 25,20 15,35 15,50 C 15,65 25,80 45,80 L 55,80" />
+    <path class="cl16-path-base" d="M 60,20 L 60,80 L 85,80" />
+    <path class="cl16-path-laser" d="M 45,20 C 25,20 15,35 15,50 C 15,65 25,80 45,80 L 55,80" />
+    <path class="cl16-path-laser" d="M 60,20 L 60,80 L 85,80" />
+    <path class="cl16-path-white" d="M 96,25 L 96,80 M 106,20 L 106,80" />
+  </svg>
+  <div class="cl16-driver-title">CHARLES LECLERC</div>
+  <div class="cl16-subline">
+    <span class="num">16</span><span class="divider">•</span><span>SCUDERIA FERRARI</span>
+  </div>
+  <div class="cl16-progress-track">
+    <div class="cl16-progress-fill"></div>
+  </div>
+</div>`
+      };
+
+      navigator.clipboard.writeText(snippets[driverId] || "").then(() => {
+        showToast("HTML snippet copied to clipboard!");
+      }).catch(() => {
+        showToast("Snippet copied!");
+      });
+    }
+  </script>
+</body>
+</html>
