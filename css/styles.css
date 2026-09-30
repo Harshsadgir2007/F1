@@ -3,7 +3,7 @@
 /* Lando Norris Official Display & Athletic Headline Fonts */
 @font-face {
   font-family: 'Brier';
-  src: url('Brier-Bold.woff2') format('woff2');
+  src: url('../assets/fonts/Brier-Bold.woff2') format('woff2');
   font-weight: 400 900;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,7 @@
 
 @font-face {
   font-family: 'Brier Bold';
-  src: url('Brier-Bold.woff2') format('woff2');
+  src: url('../assets/fonts/Brier-Bold.woff2') format('woff2');
   font-weight: 400 900;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
 /* Lando Norris Official Technical & Grotesque Body/UI Font */
 @font-face {
   font-family: 'Mona Sans Variable';
-  src: url('MonaSans-Variable.woff2') format('woff2');
+  src: url('../assets/fonts/MonaSans-Variable.woff2') format('woff2');
   font-weight: 200 900;
   font-stretch: 75% 125%;
   font-style: normal;
@@ -30,8 +30,17 @@
 /* Charles Leclerc Ultra-Condensed Display Font (Colophon Coign) */
 @font-face {
   font-family: 'Coign Pro';
-  src: url('coign-87-bold.woff2') format('woff2');
+  src: url('../assets/fonts/coign-87-bold.woff2') format('woff2');
   font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Charles Leclerc Official Editorial & Signature Sans */
+@font-face {
+  font-family: 'Leclerc Sans';
+  src: url('../assets/fonts/LeclercSans-Regular.woff2') format('woff2');
+  font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }

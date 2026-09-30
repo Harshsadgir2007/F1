@@ -8,16 +8,25 @@
 // TEAM THEMES & COLOR PALETTES
 // ============================================================================
 const TEAM_CONFIG = {
-  mclaren: { name: "McLaren", color: "#FF8000", glow: "rgba(255, 128, 0, 0.4)", logo: "mclaren.jpg" },
-  red_bull: { name: "Red Bull Racing", color: "#3671C6", glow: "rgba(54, 113, 198, 0.4)", logo: "redbull.jpg" },
-  mercedes: { name: "Mercedes", color: "#00D2BE", glow: "rgba(0, 210, 190, 0.4)", logo: "mercedes.png" },
-  ferrari: { name: "Ferrari", color: "#E8002D", glow: "rgba(232, 0, 45, 0.4)", logo: "ferrari.jpg" },
-  williams: { name: "Williams", color: "#64C4FF", glow: "rgba(100, 196, 255, 0.4)", logo: "william.png" },
-  aston_martin: { name: "Aston Martin", color: "#229971", glow: "rgba(34, 153, 113, 0.4)", logo: "f1.png" },
-  alpine: { name: "Alpine", color: "#0093CC", glow: "rgba(0, 147, 204, 0.4)", logo: "f1.png" },
-  rb: { name: "Racing Bulls", color: "#6692FF", glow: "rgba(102, 146, 255, 0.4)", logo: "f1.png" },
-  sauber: { name: "Kick Sauber", color: "#52E252", glow: "rgba(82, 226, 82, 0.4)", logo: "f1.png" },
-  haas: { name: "Haas F1 Team", color: "#B6BABD", glow: "rgba(182, 186, 189, 0.4)", logo: "f1.png" }
+  mclaren: { name: "McLaren", color: "#FF8000", glow: "rgba(255, 128, 0, 0.4)", logo: "assets/images/mclaren.jpg" },
+  red_bull: { name: "Red Bull Racing", color: "#3671C6", glow: "rgba(54, 113, 198, 0.4)", logo: "assets/images/redbull.jpg" },
+  mercedes: { name: "Mercedes", color: "#00D2BE", glow: "rgba(0, 210, 190, 0.4)", logo: "assets/images/mercedes.png" },
+  ferrari: { name: "Ferrari", color: "#E8002D", glow: "rgba(232, 0, 45, 0.4)", logo: "assets/images/ferrari.jpg" },
+  williams: { name: "Williams", color: "#64C4FF", glow: "rgba(100, 196, 255, 0.4)", logo: "assets/images/william.png" },
+  aston_martin: { name: "Aston Martin", color: "#229971", glow: "rgba(34, 153, 113, 0.4)", logo: "assets/images/f1.png" },
+  alpine: { name: "Alpine", color: "#0093CC", glow: "rgba(0, 147, 204, 0.4)", logo: "assets/images/f1.png" },
+  rb: { name: "Racing Bulls", color: "#6692FF", glow: "rgba(102, 146, 255, 0.4)", logo: "assets/images/f1.png" },
+  sauber: { name: "Kick Sauber", color: "#52E252", glow: "rgba(82, 226, 82, 0.4)", logo: "assets/images/f1.png" },
+  haas: { name: "Haas F1 Team", color: "#B6BABD", glow: "rgba(182, 186, 189, 0.4)", logo: "assets/images/f1.png" }
+};
+
+const LOCAL_DRIVER_PHOTOS = {
+  norris: "assets/images/lando.png",
+  leclerc: "assets/images/charles.jpg",
+  max_verstappen: "assets/images/max.jpeg",
+  verstappen: "assets/images/max.jpeg",
+  piastri: "assets/images/oscar.jpg",
+  russell: "assets/images/george.png"
 };
 
 function getTeamConfig(constructorId, constructorName = "") {
@@ -34,7 +43,7 @@ function getTeamConfig(constructorId, constructorName = "") {
     name: constructorName || "Formula 1 Team",
     color: "#e10600",
     glow: "rgba(225, 6, 0, 0.4)",
-    logo: "f1.png"
+    logo: "assets/images/f1.png"
   };
 }
 
@@ -330,7 +339,7 @@ function renderDriversGrid() {
     const teamName = item.constructorNames?.[0] || "Formula 1 Team";
     const teamCfg = getTeamConfig(teamId, teamName);
     const isTop3 = parseInt(item.position) <= 3;
-    const photo = item.headshotUrl;
+    const photo = item.headshotUrl || LOCAL_DRIVER_PHOTOS[item.driverId] || LOCAL_DRIVER_PHOTOS[item.familyName?.toLowerCase()];
 
     return `
       <article class="driver-card" style="--team-color: ${teamCfg.color}; --team-color-glow: ${teamCfg.glow};">
@@ -401,7 +410,7 @@ function renderTeamsGrid() {
       <div class="team-card" style="--team-color: ${teamCfg.color};">
         <div class="team-card-header">
           <span class="team-rank-pos">P${item.position}</span>
-          <img src="${teamCfg.logo}" alt="${item.constructorName}" class="team-card-logo" onerror="this.src='f1.png'">
+          <img src="${teamCfg.logo}" alt="${item.constructorName}" class="team-card-logo" onerror="this.src='assets/images/f1.png'">
         </div>
         <h3 class="team-card-name">${item.constructorName}</h3>
         <p class="team-card-country">${item.constructorNationality} • ${item.wins || 0} Wins</p>
