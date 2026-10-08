@@ -67,11 +67,11 @@ const state = {
 // ============================================================================
 async function fetchFastF1(endpoint) {
   try {
-    const res = await fetch(`/api/${endpoint}`);
+    const res = await fetch(`api/${endpoint}`);
     if (!res.ok) throw new Error(`HTTP error ${res.status}`);
     return await res.json();
   } catch (err) {
-    console.warn(`[FastF1 API] Request to /api/${endpoint} failed:`, err);
+    console.warn(`[FastF1 API] Request to api/${endpoint} failed:`, err);
     return null;
   }
 }
